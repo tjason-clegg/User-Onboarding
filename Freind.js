@@ -12,7 +12,7 @@ const UserList = (props) => {
       <h2>{details.name}</h2>
       <p>Email: {details.email}</p>
       <p>Password: {details.password}</p>
-      <p>TOS Accepted</p>
+      <p>Terms of Service Accepted</p>
       <button onClick={() => deleteUser(details.id)}>remove</button>
     </div>
   );

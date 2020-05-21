@@ -9,7 +9,7 @@ const initialUserList = [
   {
     name: "Jason",
     email: "tjason.clegg@gmail.com",
-    password: "thatscool",
+    password: "thats-cool",
     tos: true,
     id: 0,
   },
@@ -112,7 +112,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header">User Onboarding</header>
       <Form
         values={formValues}
         onInputChange={onInputChange}
@@ -126,7 +125,6 @@ const App = () => {
           <UserList deleteUser={deleteUser} key={user.id} details={user} />
         );
       })}
-      {/* {checkLength(users)} */}
     </div>
   );
 };

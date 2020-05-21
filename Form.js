@@ -14,7 +14,7 @@ const Form = (props) => {
     <form onSubmit={onSubmit}>
       <div>
         <h2>Add a user</h2>
-        <button disabled={disabled}>submit</button>
+
         <div className="errors">
           <div>{errors.name}</div>
           <div>{errors.email}</div>
@@ -69,6 +69,7 @@ const Form = (props) => {
           />
           Terms Of Service
         </label>
+        <button disabled={disabled}>submit</button>
       </div>
     </form>
   );
