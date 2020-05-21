@@ -1,79 +1,77 @@
-import React from 'react'
-
-
-
-
+import React from "react";
 
 const Form = (props) => {
-    const { 
+  const {
     values,
     onInputChange,
     onSubmit,
     disabled,
-    erros,
+    errors,
     onCheckboxChange,
-    } = props;
+  } = props;
 
-    return (
-        <form onSubmit={onSubmit}>
-            <div>
-                <h2>Add a new user!</h2>
-                <button disabled={disabled}>Submit</button>
-            </div>
-            <div>
-                <label>
-                Username
-                <input
-                    type='text'
-                    placeholder='Enter your username'
-                    maxLength='20'
-                    name='name'
-                    value={values.name}
-                    onChange={onInputChange}
-                    />
-                </label>
+  return (
+    <form onSubmit={onSubmit}>
+      <div>
+        <h2>Add a user</h2>
+        <button disabled={disabled}>submit</button>
+        <div className="errors">
+          <div>{errors.name}</div>
+          <div>{errors.email}</div>
+          <div>{errors.password}</div>
+          <div>{errors.tos}</div>
+        </div>
+      </div>
 
-                <label>
-                Email
-                <input
-                    type='text'
-                     placeholder='Enter your Email Adress'
-                    maxLength='30'
-                    name='email'
-                    value={values.email}
-                    onChange={onInputChange}
-                    />
+      <div>
+        <label>
+          Name
+          <input
+            type="text"
+            placeholder="Enter name"
+            maxLength="30"
+            name="name"
+            value={values.name}
+            onChange={onInputChange}
+          />
+        </label>
 
-                </label>
+        <label>
+          Email
+          <input
+            type="text"
+            placeholder="Enter email address"
+            maxLength="30"
+            name="email"
+            value={values.email}
+            onChange={onInputChange}
+          />
+        </label>
 
-                <label>
-                Password
-                <input
-                    type='text'
-                    placeholder='Enter your Password'
-                    maxLength='30'
-                    name='password'
-                    value={values.password}
-                    onChange={onInputChange}
-                    />
+        <label>
+          Password
+          <input
+            type="text"
+            placeholder="Enter password"
+            maxLength="30"
+            name="password"
+            value={values.password}
+            onChange={onInputChange}
+          />
+        </label>
 
-                </label>
-
-                <label>
-                
-                <input
-                    type='checkbox'
-                    name='reading'
-                    checked={values.tos}
-                    onChange={onCheckboxChange}
-                />
-                    I accept the Terms of Service
-                </label>
-            </div>
-        </form>
-    );  
-
-    
+        <label>
+          <input
+            type="checkbox"
+            name="tos"
+            checked={values.tos}
+            onChange={onCheckboxChange}
+          />
+          Terms Of Service
+        </label>
+      </div>
+    </form>
+  );
 };
 
 export default Form;

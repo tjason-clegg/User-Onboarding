@@ -1,18 +1,21 @@
-import React from 'react'
+import React from "react";
 
-export default function Team(props) {
-  const { details } = props
+const UserList = (props) => {
+  const { details, deleteUser } = props;
 
   if (!details) {
-    return <h3>Working fetching your team&apos;s details...</h3>
+    return <h3>Waiting for friends to be added</h3>;
   }
 
   return (
-    <div className='team container'>
-      <h2>{details.username}</h2>
+    <div>
+      <h2>{details.name}</h2>
       <p>Email: {details.email}</p>
-      <p>Role: {details.role}</p>
+      <p>Password: {details.password}</p>
+      <p>TOS Accepted</p>
+      <button onClick={() => deleteUser(details.id)}>remove</button>
     </div>
-  )
-}
+  );
+};
 
+export default UserList;

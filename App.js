@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "./Form";
-import Team from "./Freind";
-import * as yup from "yup";
-import axios from "axios";
+import UserList from "./Freind";
 import formSchema from "./formSchema";
+import axios from "axios";
+import * as yup from "yup";
+
+const initialUserList = [
+  {
+    name: "Jason",
+    email: "tjason.clegg@gmail.com",
+    password: "thatscool",
+    tos: true,
+    id: 0,
+  },
+];
 
 const initialFormValues = {
   name: "",
@@ -18,101 +28,105 @@ const initialFormErrors = {
   password: "",
 };
 
-const users = [];
 const initialDisabled = true;
 
 const App = () => {
-  const [user, setUser] = useState(users);
+  const [users, setUsers] = useState(initialUserList);
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(initialDisabled);
 
+  const postNewUser = (newUser) => {
+    axios
+      .post("https://reqres.in/api/users", newUser)
+      .then((res) => {
+        setUsers([res.data, ...users]);
+      })
+      .catch((error) => {
+        console.error("Server Error", error);
+      })
+      .finally(() => {
+        setFormValues(initialFormValues);
+      });
+  };
+
   const onInputChange = (event) => {
-    const { name } = event.target.name;
-    const { value } = event.target.value;
+    const name = event.target.name;
+    const value = event.target.value;
 
     yup
       .reach(formSchema, name)
-
       .validate(value)
-
       .then((valid) => {
         setFormErrors({
           ...formErrors,
           [name]: "",
         });
       })
-
-      .catch((err) => {
+      .catch((error) => {
         setFormErrors({
           ...formErrors,
-          [name]: err.errors[0],
+          [name]: error.errors[0],
         });
       });
 
-    // setFormValues({
-    //         ...formValues,
-    //         [name]: value
-    //     });
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const onCheckboxChange = (event) => {
+    const { name } = event.target;
+    const { checked } = event.target;
+    setFormValues({
+      ...formValues,
+      [name]: checked,
+    });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (
-      !formValues.name.trim() ||
-      !formValues.email.trim() ||
-      !formValues.password.trim()
-    ) {
-      return "Please enter all required fields";
-    }
-
     const newUser = { ...formValues };
-
-    setUser([newUser, ...team]);
-
-    setFormValues(initialFormValues);
+    postNewUser(newUser);
   };
 
-  const onCheckboxChange = (evt) => {
-    const { name } = evt.target;
-    const { checked } = evt.target;
+  const deleteUser = (email) => {
+    const valueToRemove = email;
+    const filteredItems = users.filter((item) => item.id !== valueToRemove);
+    setUsers(filteredItems);
+  };
 
-    setFormValues({
-      ...formValues,
-      tos: {
-        ...formValues.tos,
-        [name]: checked,
-      },
+  useEffect(() => {
+    formSchema.isValid(formValues).then((valid) => {
+      setDisabled(!valid);
     });
+  }, [formValues]);
+
+  const checkLength = (array) => {
+    if (array.length > 0) {
+      array.map((user) => {
+        return (
+          <UserList deleteUser={deleteUser} key={user.id} details={user} />
+        );
+      });
+    }
   };
-
-  //     const postNewFriend = newFriend => {
-
-  //     axios.post('https://reqres.in/api/users', newUser)
-  //       .then(res => {
-  //         setUser([res.data, ...users])
-  //       })
-  //       .catch(err => {
-  //         debugger
-  //       })
-  //       .finally(() => {
-  //         setFormValues(initialFormValues)
-  //       })
-  //   }
 
   return (
     <div className="App">
+      <header className="App-header">User Onboarding</header>
       <Form
         values={formValues}
         onInputChange={onInputChange}
         onSubmit={onSubmit}
         disabled={disabled}
+        errors={formErrors}
         onCheckboxChange={onCheckboxChange}
       />
-
-      {user.map((users) => {
-        return <Team key={users.id} details={users} />;
+      {users.map((user) => {
+        return (
+          <UserList deleteUser={deleteUser} key={user.id} details={user} />
+        );
       })}
+      {/* {checkLength(users)} */}
     </div>
   );
 };
