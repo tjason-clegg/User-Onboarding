@@ -69,7 +69,9 @@ const Form = (props) => {
           />
           Terms Of Service
         </label>
-        <button disabled={disabled}>submit</button>
+        <button className="submit" disabled={disabled}>
+          Submit
+        </button>
       </div>
     </form>
   );
